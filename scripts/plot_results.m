@@ -1,0 +1,94 @@
+% 2018/04/24 Uwe Ehret
+% plot bit invested vs. information missing
+
+% order:
+% - model-00: mean
+% - model-01: perfect
+% - model-02: lin res   1h      double
+% - model-03: lin res   1min    double
+% - model-04: lin res   1h      integer
+% - model-05: 2 linres  1h      double
+% - model-06: lin res iterative     1h  double
+
+% byte invested. From results of 2018/05/04
+% unit: byte
+byte_invested = [7828912 8270751 8240289 40710307 8180589 8241625 8241056]';
+% convert to bit
+bit_invested = byte_invested * 8;
+% convert to bit per timestep
+num_ts = 87650; % length of the observed and simulated time series
+bit_invested_per_ts = bit_invested / num_ts;
+
+% Conditional Entropy of target given the model output (=missing info to the
+% truth), from evaluate_model_output.m [bit]
+h_cond = [3.4611 0 2.8920 2.8924 3.2346 2.8512 2.8921]';
+
+labels = {'M-00' 'M-01' 'M-02' 'M-03' 'M-04' 'M-05' 'M-06'}; 
+
+figure('units','normalized','outerposition',[0 0 0.8 1])
+% axes('Position',[0.07 0.09 0.52 0.8]); % [left bottom width height]
+hold on
+scatter(h_cond(1),bit_invested_per_ts(1),80, 'v', 'filled', 'MarkerFaceColor',rgb('teal'));
+scatter(h_cond(2),bit_invested_per_ts(2),80, '>', 'filled', 'MarkerFaceColor',rgb('red'));
+scatter(h_cond(3),bit_invested_per_ts(3),80, 'v', 'filled', 'MarkerFaceColor',rgb('darkviolet'));
+scatter(h_cond(4),bit_invested_per_ts(4),80, '>', 'filled', 'MarkerFaceColor',rgb('darkorange'));
+scatter(h_cond(5),bit_invested_per_ts(5),80, '^', 'filled', 'MarkerFaceColor',rgb('darkolivegreen'));
+scatter(h_cond(6),bit_invested_per_ts(6),80, '<', 'filled', 'MarkerFaceColor',rgb('sienna'));
+scatter(h_cond(7),bit_invested_per_ts(7),80, '^', 'filled', 'MarkerFaceColor',rgb('green'));
+
+labelpoints(h_cond(1),bit_invested_per_ts(1),labels(1), 'SE', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('teal'));
+labelpoints(h_cond(2),bit_invested_per_ts(2),labels(2), 'E', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('red'));
+labelpoints(h_cond(3),bit_invested_per_ts(3),labels(3), 'S', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkviolet'));
+labelpoints(h_cond(4),bit_invested_per_ts(4),labels(4), 'E', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkorange'));
+labelpoints(h_cond(5),bit_invested_per_ts(5),labels(5), 'NE', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkolivegreen'));
+labelpoints(h_cond(6),bit_invested_per_ts(6),labels(6), 'W', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('sienna'));
+labelpoints(h_cond(7),bit_invested_per_ts(7),labels(7), 'N', 0.2, 'FontSize',32,'FontWeight','bold', 'Color', rgb('green'));
+
+X = [log2(151), log2(151)];
+Y = [0, 4000];
+plot(X,Y, 'LineWidth',2, 'Color', rgb('black'));
+labelpoints(7.4,2000, 'Max information lost', 'NE', 'FontSize',32,'FontWeight','bold', 'Color', rgb('black'), 'rotation',90);
+
+xlim([0 8]);
+ylim([0 4000]);
+xlabel('H(target|model) = Information lost per timestep (bit)');
+ylabel('Data invested per timestep (bit)');
+set(gca, 'FontName', 'Liberation Sans','FontSize',32,'FontWeight','bold');
+set(gca,'LooseInset',get(gca,'TightInset')); % erase unnnecesary outside whitespace
+
+rectangle('Position', [2.1 450 2.1 650], 'EdgeColor','k', 'LineWidth', 1);
+
+hold off
+
+curr_path = pwd;
+out_path = [curr_path(1:find(pwd == '/', 1, 'last')) 'output/'];
+print ([out_path 'fig_bit_by_bit'], '-dpng', '-r600');
+
+% create zoom-in plot
+figure('units','normalized','outerposition',[0 0 0.6 0.8])
+% axes('Position',[.68 .3 .3 .4]); % [left bottom width height]
+box on;
+hold on;
+scatter(h_cond(1),bit_invested_per_ts(1),80, 'v', 'filled', 'MarkerFaceColor',rgb('teal'));
+scatter(h_cond(3),bit_invested_per_ts(3),80, 'v', 'filled', 'MarkerFaceColor',rgb('darkviolet'));
+scatter(h_cond(4),bit_invested_per_ts(4),80, '>', 'filled', 'MarkerFaceColor',rgb('darkorange'));
+scatter(h_cond(5),bit_invested_per_ts(5),80, '^', 'filled', 'MarkerFaceColor',rgb('darkolivegreen'));
+scatter(h_cond(6),bit_invested_per_ts(6),80, '<', 'filled', 'MarkerFaceColor',rgb('sienna'));
+scatter(h_cond(7),bit_invested_per_ts(7),80, '^', 'filled', 'MarkerFaceColor',rgb('green'));
+
+labelpoints(h_cond(1),bit_invested_per_ts(1),labels(1), 'SE', 0.01, 'FontSize',32,'FontWeight','bold', 'Color', rgb('teal'));
+labelpoints(h_cond(3),bit_invested_per_ts(3),labels(3), 'S', 0.01, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkviolet'));
+labelpoints(h_cond(4),bit_invested_per_ts(4),labels(4), 'E', 0.01, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkorange'));
+labelpoints(h_cond(5),bit_invested_per_ts(5),labels(5), 'NE', 0.01, 'FontSize',32,'FontWeight','bold', 'Color', rgb('darkolivegreen'));
+labelpoints(h_cond(6),bit_invested_per_ts(6),labels(6), 'W', 0.3, 'FontSize',32,'FontWeight','bold', 'Color', rgb('sienna'));
+labelpoints(h_cond(7),bit_invested_per_ts(7),labels(7), 'N', 0.01, 'FontSize',32,'FontWeight','bold', 'Color', rgb('green'));
+
+xlim([2.5 4]);
+ylim([700 780]);
+% yticks(1.5:0.1:2.5);
+xlabel('Information lost (bit)');
+ylabel('Data invested (bit)');
+set(gca, 'FontName', 'Liberation Sans','FontSize',32,'FontWeight','bold');
+set(gca,'LooseInset',get(gca,'TightInset')); % erase unnnecesary outside whitespace
+
+print ([out_path 'fig_bit_by_bit_sub'], '-dpng', '-r600');
