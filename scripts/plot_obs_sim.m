@@ -13,7 +13,7 @@ load model_06_out
 
 figure('units','normalized','outerposition',[0 0 0.8 1])
 hold on
-plot(DatumZeit(29401:29617),q_host(29401:29617),'LineWidth',4,'color',rgb('steelblue'));
+plot(DatumZeit(29401:29617),q_host(29401:29617),'LineStyle','--','LineWidth',4,'color',rgb('steelblue'));
 plot(DatumZeit(29401:29617),output_00(29401:29617),'LineWidth',1,'color',rgb('teal'));
 plot(DatumZeit(29401:29617),output_01(29401:29617),'LineWidth',1,'color',rgb('red'));
 plot(DatumZeit(29401:29617),output_02(29401:29617),'LineWidth',1,'color',rgb('darkviolet'));
