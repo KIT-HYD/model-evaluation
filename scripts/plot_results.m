@@ -10,9 +10,12 @@
 % - model-05: 2 linres  1h      double
 % - model-06: lin res iterative     1h  double
 
-% byte invested. From results of 2018/05/04
+% byte invested, from results of strace available at "strace/logs/avg_read.log"
 % unit: byte
-byte_invested = [7828912 8270751 8240289 40710307 8180589 8241625 8241056]';
+avreID = fopen('avg_read.log','r');
+texs = textscan(avreID, '%s %s %s %s %.0f %s');
+fclose(avreID);
+byte_invested = transpose(texs{1, 5});
 % convert to bit
 bit_invested = byte_invested * 8;
 % convert to bit per timestep
@@ -20,8 +23,8 @@ num_ts = 87650; % length of the observed and simulated time series
 bit_invested_per_ts = bit_invested / num_ts;
 
 % Conditional Entropy of target given the model output (=missing info to the
-% truth), from evaluate_model_output.m [bit]
-h_cond = [3.4611 0 2.8920 2.8924 3.2346 2.8512 2.8921]';
+% truth), from evaluate_model_output.m in bit saved at "data/cond_ent.mat"
+load cond_ent.mat;
 
 labels = {'M-00' 'M-01' 'M-02' 'M-03' 'M-04' 'M-05' 'M-06'}; 
 
@@ -62,7 +65,7 @@ hold off
 
 curr_path = pwd;
 out_path = [curr_path(1:find(pwd == '/', 1, 'last')) 'output/'];
-print ([out_path 'fig_bit_by_bit'], '-dpng', '-r600');
+print ([out_path 'fig_bit_by_bit_'], '-dpng', '-r600');
 
 % create zoom-in plot
 figure('units','normalized','outerposition',[0 0 0.6 0.8])
@@ -91,4 +94,4 @@ ylabel('Data invested (bit)');
 set(gca, 'FontName', 'Liberation Sans','FontSize',32,'FontWeight','bold');
 set(gca,'LooseInset',get(gca,'TightInset')); % erase unnnecesary outside whitespace
 
-print ([out_path 'fig_bit_by_bit_sub'], '-dpng', '-r600');
+print ([out_path 'fig_bit_by_bit_sub_'], '-dpng', '-r600');
