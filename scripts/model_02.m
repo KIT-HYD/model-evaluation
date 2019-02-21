@@ -28,8 +28,11 @@ for t = 2 : len
     S = S - qsim(t);            % storage change due to discharge
 end
 
-% convert the discharge from [mm/h] into [m³/s]
+% convert the discharge from [mm/h] into [mï¿½/s]
 output_02 = qsim * 31.8888888;
 
 % save the output
-save model_02_out output_02
+curr_path = pwd;
+out_path = [curr_path(1:find(pwd == '/', 1, 'last')) 'data/'];
+out_path = [out_path 'model_02_out.mat'];
+save (out_path, 'output_02');
