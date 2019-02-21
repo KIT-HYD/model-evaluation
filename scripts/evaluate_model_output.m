@@ -108,6 +108,13 @@ edges{2} = edges_q;
 [data_binned, data_histcounts] = f_histcounts_anyd(data, edges);
 [~, ~, ~, H_xgy_06, ~, ~] = f_infomeasures_from_samples(data, edges, data_binned, data_histcounts, sample_sizes, num_rep, samplingstrategy);
 
+h_cond = [H_xgy_00, H_xgy_01, H_xgy_02, H_xgy_03, H_xgy_04, H_xgy_05, H_xgy_06];
+
+curr_path = pwd;
+out_path = [curr_path(1:find(pwd == '/', 1, 'last')) 'data/'];
+out_path = [out_path 'cond_ent.mat'];
+save (out_path, 'h_cond');
+
 % compute 'bits' to knowledge (# of binary questions away from knowledge)
 btk_00 = H_xgy_00 * len_data;
 btk_01 = H_xgy_01 * len_data;
