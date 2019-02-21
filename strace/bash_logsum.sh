@@ -8,6 +8,11 @@ ef_04=logs/logmodel_04/sum_pymodel_04.csv
 ef_05=logs/logmodel_05/sum_pymodel_05.csv
 ef_06=logs/logmodel_06/sum_pymodel_06.csv
 
+file="logs/avg_read.log"
+if [ -f $file ] ; then
+    rm -f $file
+fi
+
 FILES_00=logs/logmodel_00/pymodel_00_*
 for f in $FILES_00
     do
