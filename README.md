@@ -2,10 +2,12 @@
 This repository contains all source codes and data files used for the experiments that has been done for the preperation of manuscript "A Generalized Approach for Model Evaluation by Comparing Invested Data versus Obtained Information".
 
 ## Requirements
-- Matlab R2018b
-- Python 3.6.5
-    - Numpy 1.16.0
-    - Scipy 1.2.0
+- Matlab R2019b
+- Python 3.6.9
+    - Numpy 1.16.4
+    - Pandas 0.24.2
+    - Scipy 1.3.0
+    - Keras 2.3.1
 - Strace
     - Available at linux software repositories 
 
