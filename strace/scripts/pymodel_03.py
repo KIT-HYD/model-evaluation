@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.signal import lfilter
-p_ebni_min = pd.read_csv('../data/p_ebni_min.csv', header=None, names=['input'], dtype=np.float64)
+p_ebni_min = pd.read_csv('data/p_ebni_min.csv', header=None, names=['input'], dtype=np.float64)
 len_p_ebni_min = p_ebni_min.shape[0]
 K = np.float64(55 * 60)
 qsim = pd.DataFrame(0, index=np.arange(len_p_ebni_min), columns=['output'], dtype=np.float64)
@@ -13,4 +13,4 @@ for t in range(1, len_p_ebni_min):
 dummy = lfilter(np.ones(60), 1, qsim['output'], axis=0)
 output_03 = pd.DataFrame(dummy[59::60], columns=['output'], dtype=np.float64)
 output_03 = np.round((output_03['output'] * 31.8888888), 4)
-output_03.to_csv('../data/model_03_out.csv', header=False, index=False)
+output_03.to_csv('data/model_03_out.csv', header=False, index=False)

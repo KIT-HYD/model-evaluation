@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-p_ebni = pd.read_csv('../data/p_ebni.csv', header=None, names=['input'], dtype=np.float64)
+p_ebni = pd.read_csv('data/p_ebni.csv', header=None, names=['input'], dtype=np.float64)
 len_p_ebni = p_ebni.shape[0]
 epsilon = np.float64(0.001)
 K = np.float64(55)
@@ -20,4 +20,4 @@ for t in range(1, len_p_ebni):
     qsim.iloc[t, 0] = qsim_new
     S = S - qsim_new
 output_06 = np.round((qsim['output'] * 31.8888888), 4)
-output_06.to_csv('../data/model_06_out.csv', header=False, index=False)
+output_06.to_csv('data/model_06_out.csv', header=False, index=False)

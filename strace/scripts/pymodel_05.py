@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-p_ebni = pd.read_csv('../data/p_ebni.csv', header=None, names=['input'], dtype=np.float64)
+p_ebni = pd.read_csv('data/p_ebni.csv', header=None, names=['input'], dtype=np.float64)
 len_p_ebni = p_ebni.shape[0]
 P_threshold = np.float64(2)
 K_fast = np.float64(10)
@@ -23,4 +23,4 @@ for t in range(1, len_p_ebni):
     S = S - q_reservoir
     qsim.iloc[t, 0] = q_reservoir_fast + q_reservoir
 output_05 = np.round((qsim['output'] * 31.8888888), 4)
-output_05.to_csv('../data/model_05_out.csv', header=False, index=False)
+output_05.to_csv('data/model_05_out.csv', header=False, index=False)
