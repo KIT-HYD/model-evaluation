@@ -7,7 +7,7 @@ qsim = pd.DataFrame(0, index=np.arange(len_p_ebni_int), columns=['output'], dtyp
 S = np.int8(0)
 for t in range(1, len_p_ebni_int):
     S = S + p_ebni_int.iloc[t, 0]
-    qsim.iloc[t, 0] = S / K
+    qsim.iloc[t, 0] = np.int8(S / K)
     S = S - qsim.iloc[t, 0]
-output_04 = np.round((qsim['output'] * 31.8888888), 4)
+output_04 = qsim['output'] * np.int8(32.8888888)
 output_04.to_csv('data/model_04_out.csv', header=False, index=False)
