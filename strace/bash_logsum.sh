@@ -1,80 +1,23 @@
 #!/bin/bash
 
-ef_00=logs/logmodel_00/sum_pymodel_00.csv
-ef_01=logs/logmodel_01/sum_pymodel_01.csv
-ef_02=logs/logmodel_02/sum_pymodel_02.csv
-ef_03=logs/logmodel_03/sum_pymodel_03.csv
-ef_04=logs/logmodel_04/sum_pymodel_04.csv
-ef_05=logs/logmodel_05/sum_pymodel_05.csv
-ef_06=logs/logmodel_06/sum_pymodel_06.csv
-ef_07=logs/logmodel_07/sum_pymodel_07.csv
-ef_08=logs/logmodel_08/sum_pymodel_08.csv
-
-file="logs/avg_read.log"
-if [ -f $file ] ; then
-    rm -f $file
+file=logs/avg_read.log
+if [ ! -e "$file" ] ; then
+    touch "$file"
 fi
 
-FILES_00=logs/logmodel_00/pymodel_00_*
-for f in $FILES_00
+for i in {0..8}
+do
+    FILES=logs/logmodel_0$i/pymodel_0${i}_*
+    ef=logs/logmodel_0$i/sum_pymodel_0$i.csv
+    
+    if [ ! -e "$ef" ] ; then
+    touch "$ef"
+    fi
+    
+    for f in $FILES
     do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_00/sum_pymodel_00.csv"}'
+        cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum}' >> "$ef"
     done
-cat $ef_00 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_00: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_01=logs/logmodel_01/pymodel_01_*
-for f in $FILES_01
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_01/sum_pymodel_01.csv"}'
-    done
-cat $ef_01 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_01: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_02=logs/logmodel_02/pymodel_02_*
-for f in $FILES_02
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_02/sum_pymodel_02.csv"}'
-    done
-cat $ef_02 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_02: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_03=logs/logmodel_03/pymodel_03_*
-for f in $FILES_03
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_03/sum_pymodel_03.csv"}'
-    done
-cat $ef_03 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_03: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_04=logs/logmodel_04/pymodel_04_*
-for f in $FILES_04
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_04/sum_pymodel_04.csv"}'
-    done
-cat $ef_04 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_04: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_05=logs/logmodel_05/pymodel_05_*
-for f in $FILES_05
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_05/sum_pymodel_05.csv"}'
-    done
-cat $ef_05 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_05: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_06=logs/logmodel_06/pymodel_06_*
-for f in $FILES_06
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_06/sum_pymodel_06.csv"}'
-    done
-cat $ef_06 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_06: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_07=logs/logmodel_07/pymodel_07_*
-for f in $FILES_07
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_07/sum_pymodel_07.csv"}'
-    done
-cat $ef_07 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_07: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
-FILES_08=logs/logmodel_08/pymodel_08_*
-for f in $FILES_08
-    do
-    cat $f | awk 'BEGIN {FS="="}{sum += $2} END {print sum >> "logs/logmodel_08/sum_pymodel_08.csv"}'
-    done
-cat $ef_08 | awk 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_08: %.2f, \n", avg) >> "logs/avg_read.log"}'
-
+    
+    cat $ef | awk -v i=$i 'BEGIN {FS="\n"}{avg = (sume += $1) / 100} END {printf("avgerage read of pymodel_0%s: %.2f, \n", i, avg)}' >> "$file"
+done
