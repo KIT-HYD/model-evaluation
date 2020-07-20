@@ -1,9 +1,8 @@
-% 2017/11/30 Uwe Ehret
+% 2020/07/08 Uwe Ehret
 % A simple Rainfall-Runoff model: Reads the observed rainfall as input,
 % and transforms it to output with a linear reservoir approximation
-% p_ebni is rainfall observed at Ebnit [mm/h]. This is the input
-% The value of the retention constant was found by manual/visual optimization
-% based on model_02, but instead of a simple forward-in-time scheme here we
+% p_ebni is rainfall observed at Ebnit [mm/h]. This is the input.
+% The model is the same as model_02, but instead of a simple forward-in-time scheme here we
 % use an interative scheme
 % dt = 1 h
 % precision (input, output, state variables): double
@@ -13,14 +12,14 @@ close all;
 clc;
 
 % load the input data
-load p_ebni
+load ../data/p_ebni_val
 
 % get parameters
-len = length(p_ebni);   % length of the data set
+len = 43802;   % length of the data set
 epsilon = 0.001;        % iteration cutoff criterion
 
 % hydrological model setup
-K = 55;                 % retention constant = mean transit time [h]
+K = 64;                 % retention constant = mean transit time [h]
 qsim = zeros(len,1);    % reservoir discharge [mm/h]
 S = 0;                  % initialize the reservoir fill level [mm]
 
@@ -28,7 +27,7 @@ S = 0;                  % initialize the reservoir fill level [mm]
 for t = 2 : len
     
     % storage change due to rainfall input  
-    S = S + p_ebni(t);           
+    S = S + p_ebni_val(t);           
     
     % First guess for discharge (use S at the beginning of the period dt)
     qsim_old = S / K; 
@@ -46,7 +45,7 @@ for t = 2 : len
         qsim_new = S_old / K;    
 
         % compare qsim_old and qsim_new
-        if abs((qsim_old - qsim_new) / qsim_old ) < epsilon
+        if abs(qsim_old - qsim_new) < epsilon
             done_flag = true;
         else
             qsim_old = (qsim_old + qsim_new)/2;
@@ -60,11 +59,8 @@ for t = 2 : len
 
 end
 
-% convert the discharge from [mm/h] into [m�/s]
+% convert the discharge from [mm/h] into [m³/s]
 output_06 = qsim * 31.8888888;
 
 % save the output
-curr_path = pwd;
-out_path = [curr_path(1:find(pwd == '/', 1, 'last')) 'data/'];
-out_path = [out_path 'model_06_out.mat'];
-save (out_path, 'output_06');
+save ../data/model_06_out output_06
