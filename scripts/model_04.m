@@ -17,9 +17,9 @@ load ../data/p_ebni_int_val
 len = 43802; % length of the data set
 
 % hydrological model setup
-K = 64;                         % retention constant = mean transit time [h]
-qsim = int8(zeros(len,1));      % reservoir discharge [mm/h]
-S = int8(0);                    % initialize the reservoir fill level [mm]              
+K = uint8(64);                         % retention constant = mean transit time [h]
+qsim = uint8(zeros(len,1));      % reservoir discharge [mm/h]
+S = uint8(0);                    % initialize the reservoir fill level [mm]              
 
 % loop over time
 for t = 2 : len
