@@ -2,7 +2,7 @@
 
 cd scripts
 
-for i in {0..8}
+for i in {0..9}
 do
     if [ ! -d "../logs/logmodel_0$i" ]
     then
@@ -15,7 +15,7 @@ tr=read
 
 for i in {1..100}
 do
-    for j in {0..8}
+    for j in {0..9}
     do
         strace -o ../logs/logmodel_0$j/pymodel_0${j}_$i.log -e trace=$tr python3.6 pymodel_0$j.py
         rm -rf ../data/model_0${j}_out.csv

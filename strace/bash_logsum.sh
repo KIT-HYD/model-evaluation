@@ -5,7 +5,7 @@ if [ ! -e "$file" ] ; then
     touch "$file"
 fi
 
-for i in {0..8}
+for i in {0..9}
 do
     FILES=logs/logmodel_0$i/pymodel_0${i}_*
     ef=logs/logmodel_0$i/sum_pymodel_0$i.csv
