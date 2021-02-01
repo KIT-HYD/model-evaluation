@@ -1,9 +1,9 @@
-# A Generalized Approach for Model Evaluation
+# A Practical and General Approach for Model Evaluation
 This repository contains all source codes and data files used in the experiments of the manuscript "Technical note: “Bit by bit”: A practical and general approach for evaluating model computational complexity vs. model performance".
 
 ## Requirements
 - Matlab
-- Python 3.6
+- Python >= 3
     - Numpy
     - Pandas
     - Scipy
